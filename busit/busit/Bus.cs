@@ -17,14 +17,20 @@ namespace busit
         private double lng;
         private int bus_id;
 
-        Bus(double lat, double lng, String route, int bus_id)
+        Bus(double lat, double lng, int bus_id, String route)
         {
             this.lat = lat;
             this.lng = lng;
             this.bus_id = bus_id;
-            setColor(route);
-            this.route = route.ToUpperInvariant();
-            this.direction = "UNKNOWN";
+            setRoute(route);
+        }
+
+        Bus(double lat, double lng, int bus_id, String route, String direction)
+        {
+            this.lat = lat;
+            this.lng = lng;
+            this.bus_id = bus_id;
+            setRoute(route, direction);
         }
 
         // Sets color associated with bus based on route
