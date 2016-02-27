@@ -18,7 +18,6 @@ namespace busit
     public partial class MainPage : PhoneApplicationPage
     {
         // Constructor
-        // Constructor
         public MainPage()
         {
             InitializeComponent();
