@@ -19,6 +19,7 @@ namespace busit
             this.lng = lng;
             this.bus_id = bus_id;
             this.route = route;
+            direction = "UNKNOWN";
         }
 
         //Constructor class for all fields incl. direction
@@ -60,18 +61,21 @@ namespace busit
             switch (route)
             {
                 case "UPPER CAMPUS":
-                    this.bus_color = Colors.Yellow;
+                    bus_color = Colors.Yellow;
                     break;
                 // need to update based on direction
                 // for inner or outer loop
                 case "LOOP":
-                    this.bus_color = Colors.Blue;
+                    if (this.direction == "INNER")
+                        bus_color = Colors.Orange;
+                    else //if (this.direction == "OUTER")
+                        bus_color = Colors.Blue;
                     break;
                 case "NIGHT OWL":
-                    this.bus_color = Colors.DarkGray;
+                    bus_color = Colors.DarkGray;
                     break;
                 default:
-                    this.bus_color = Colors.Red;
+                    bus_color = Colors.Red;
                     break;
             }
         }
@@ -80,8 +84,8 @@ namespace busit
         // notation not allowing for mult params
         public void setRouteAndDirection(String newRoute, String newDirection)
         {
+            this.direction = newDirection;
             this.route = newRoute;
-            this.direction = newDirection.ToUpperInvariant();
         }
 
         // GETTERs
