@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Maps.Controls;
 using busit.Resources;
+using System.Device.Location;
 
 namespace busit
 {
@@ -18,7 +20,8 @@ namespace busit
         public MainPage()
         {
             InitializeComponent();
-
+            Map OurMap = new Map();
+            ContentPanel.Children.Add(OurMap);
             Loaded += MainPage_Loaded;
 
             // Sample code to localize the ApplicationBar
