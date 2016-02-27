@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Windows.Media;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
 
 namespace busit
 {
@@ -17,21 +12,47 @@ namespace busit
         private double lng;
         private int bus_id;
 
+        //Constructor class without direction
         Bus(double lat, double lng, int bus_id, String route)
         {
             this.lat = lat;
             this.lng = lng;
             this.bus_id = bus_id;
-            setRoute(route);
+            this.route = route;
         }
 
+        //Constructor class for all fields incl. direction
         Bus(double lat, double lng, int bus_id, String route, String direction)
         {
             this.lat = lat;
             this.lng = lng;
             this.bus_id = bus_id;
-            setRoute(route, direction);
+            setRouteAndDirection(route, direction);
         }
+
+        // GETTER-SETTERs
+        // accessed by dot operator 
+        // e.g. for setter: bus.Route = "NIGHT OWL" 
+        // or for getter: Console.Write(bus.Route)
+
+        public String Route
+        {
+            get { return route; }
+
+            set
+            {
+                setColor(value);
+                route = value.ToUpperInvariant();
+            }
+        }
+
+        public String Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
+
+        // SETTERs
 
         // Sets color associated with bus based on route
         private void setColor(String route)
@@ -55,46 +76,34 @@ namespace busit
             }
         }
 
-        public void setRoute(String newRoute)
+        // manual set route and direction due to get-set
+        // notation not allowing for mult params
+        public void setRouteAndDirection(String newRoute, String newDirection)
         {
-            setColor(newRoute);
-            this.route = newRoute.ToUpperInvariant();
-        }
-
-        public void setRoute(String newRoute, String newDirection)
-        {
-            setRoute(newRoute);
+            this.route = newRoute;
             this.direction = newDirection.ToUpperInvariant();
         }
 
-        public String getRoute()
+        // GETTERs
+
+        public Color BusColor
         {
-            return this.route;
+            get { return bus_color; }
         }
 
-        public String getDirection()
+        public double Lat
         {
-            return this.direction;
+            get { return lat; }
         }
 
-        public Color getColor()
+        public double Lng
         {
-            return this.bus_color;
+            get { return lng; }
         }
 
-        public double getLat()
+        public int BusId
         {
-            return this.lat;
-        }
-
-        public double getLng()
-        {
-            return this.lng;
-        }
-
-        public int getBusId()
-        {
-            return this.bus_id;
+            get { return bus_id; }
         }
     }
 
