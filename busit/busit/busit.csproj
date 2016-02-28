@@ -107,6 +107,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="WebClientExtensions\EAPCommon.cs" />
+    <Compile Include="WebClientExtensions\HttpClient.cs" />
+    <Compile Include="WebClientExtensions\WebClientExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
