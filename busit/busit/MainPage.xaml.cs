@@ -51,9 +51,9 @@ namespace busit
             // Create a small circle to indicate location
             Ellipse userCircle = new Ellipse();
             userCircle.Fill = new SolidColorBrush(Colors.Blue);
-            userCircle.Height = 20;
-            userCircle.Height = 20;
-            userCircle.Width = 20;
+            userCircle.Height = 16;
+            userCircle.Height = 16;
+            userCircle.Width = 16;
 
             // Create a MapOverlay to contain the circle.
             MapOverlay myLocationOverlay = new MapOverlay();
@@ -72,6 +72,7 @@ namespace busit
             // Redmond, WA until obtaining a token for location
             // information -- which is only available when
             // submitting an app to their store.
+
             // Center map on current location
             //this.CampusMap.Center = userLocation;
             //this.CampusMap.ZoomLevel = 13;
