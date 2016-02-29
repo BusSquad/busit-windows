@@ -12,6 +12,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps.Controls;
 using Windows.Devices.Geolocation;  // Provides the Geocoordinate class
 using busit.Resources;
+using System.Threading.Tasks;
 
 namespace busit
 {
@@ -32,11 +33,26 @@ namespace busit
         {
             UpdateMap();
             ShowUserLocation();
+            ShowBusLocations();
         }
 
         private void UpdateMap()
         {
             CampusMap.SetView(new GeoCoordinate(36.991406, -122.060731), 14);
+        }
+
+        private async void ShowBusLocations()
+        {
+            // poll server for bus locations
+            BusTrackers busTrackerInfo = new BusTrackers();
+            string json = await busTrackerInfo.GetBusTrackerDataAsync();
+            
+            // for debugging purposes
+            Console.Write(json);
+
+            // TODO: Parse Json and place markers on map
+            // refer to documentation for Json.NET
+            // @ http://www.newtonsoft.com/json/help/html/Introduction.htm
         }
 
         private async void ShowUserLocation()
