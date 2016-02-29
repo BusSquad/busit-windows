@@ -45,14 +45,15 @@ namespace busit
         {
             // poll server for bus locations
             BusTrackers busTrackerInfo = new BusTrackers();
-            string json = await busTrackerInfo.GetBusTrackerDataAsync();
+            List<Bus> buses = await busTrackerInfo.GetBusTrackerDataAsync();
             
             // for debugging purposes
-            Console.Write(json);
+            Console.Write(buses);
 
-            // TODO: Parse Json and place markers on map
+            // TODO: Parse Json Array and place markers on map
             // refer to documentation for Json.NET
             // @ http://www.newtonsoft.com/json/help/html/Introduction.htm
+            // Preferred that BusTrackers return a list of Buses.
         }
 
         private async void ShowUserLocation()

@@ -7,52 +7,52 @@ namespace busit
     {
         // local variables + GETTER-SETTERs
         public double lat { get; private set; }
-        public double lng { get; private set; }
+        public double lon { get; private set; }
         public int busID { get; private set; }
         public Color busColor { get; private set; }
         public String direction { get; set; }
-        public String route
+        public String type
         {
-            get { return route; }
+            get { return type; }
 
             set
             {
                 updateColor(value);
-                route = value.ToUpperInvariant();
+                type = value.ToUpperInvariant();
             }
         }
 
         //CONSTRUCTORs
         //Constructor class without direction
-        Bus(double lat, double lng, int busID, String route)
+        Bus(double lat, double lon, int busID, String type)
         {
             this.lat = lat;
-            this.lng = lng;
+            this.lon = lon;
             this.busID = busID;
-            setRouteAndDirection(route, "UNKNOWN");
+            setRouteAndDirection(type, "UNKNOWN");
         }
 
         //Constructor class for all fields incl. direction
-        Bus(double lat, double lng, int busID, String route, String direction)
+        Bus(double lat, double lon, int busID, String type, String direction)
         {
             this.lat = lat;
-            this.lng = lng;
+            this.lon = lon;
             this.busID = busID;
-            setRouteAndDirection(route, direction);
+            setRouteAndDirection(type, direction);
         }
 
         // SETTERs
         // manual set route and direction 
-        public void setRouteAndDirection(String route, String direction)
+        public void setRouteAndDirection(String type, String direction)
         {
             this.direction = direction;
-            this.route = route;
+            this.type = type;
         }
 
         // Sets color associated with bus based on route
-        private void updateColor(String route)
+        private void updateColor(String type)
         {
-            switch (route)
+            switch (type)
             {
                 case "UPPER CAMPUS":
                     busColor = Colors.Yellow;
@@ -72,6 +72,11 @@ namespace busit
                     busColor = Colors.Red;
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            return "[Bus ID: " + busID.ToString() + ", Type: " + type + "] ";
         }
 
     }
