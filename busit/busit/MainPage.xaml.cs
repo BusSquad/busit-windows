@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Device.Location;      // Provides the GeoCoordinate class.
-using System.Linq;
 using System;
-using System.Net;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps.Controls;
 using Windows.Devices.Geolocation;  // Provides the Geocoordinate class
-using busit.Resources;
-using System.Threading.Tasks;
+using System.Diagnostics;
+
+// TODO: Put ShowBusLocations in a runnable
+// and place markers on map
 
 namespace busit
 {
@@ -46,14 +44,16 @@ namespace busit
             // poll server for bus locations
             BusTrackers busTrackerInfo = new BusTrackers();
             List<Bus> buses = await busTrackerInfo.GetBusTrackerDataAsync();
-            
-            // for debugging purposes
-            Console.Write(buses);
 
-            // TODO: Parse Json Array and place markers on map
-            // refer to documentation for Json.NET
-            // @ http://www.newtonsoft.com/json/help/html/Introduction.htm
-            // Preferred that BusTrackers return a list of Buses.
+            // for debugging purposes
+            if(buses != null)
+            {
+                foreach(Bus bus in buses)
+                {
+                    Debug.WriteLine(bus);
+                }
+            }
+
         }
 
         private async void ShowUserLocation()
