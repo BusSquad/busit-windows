@@ -8,12 +8,12 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using busit.Resources;
+using System.Device.Location;
 
 namespace busit
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Constructor
         // Constructor
         public MainPage()
         {
@@ -35,6 +35,8 @@ namespace busit
 
         private void UpdateMap()
         {
+
+            // zoomz into the following coordinates
             CampusMap.SetView(new GeoCoordinate(36.991406, -122.060731), 15);
         }
 
