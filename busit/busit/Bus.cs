@@ -6,9 +6,9 @@ namespace busit
     class Bus
     {
         // local variables + GETTER-SETTERs
-        public double lat { get; private set; }
-        public double lon { get; private set; }
-        public int busID { get; private set; }
+        public double lat { get; set; }
+        public double lon { get; set; }
+        public int busID { get; set; }
         public Color busColor { get; private set; }
         public String direction { get; set; }
         public String type

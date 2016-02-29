@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,17 +16,18 @@ namespace busit
     {
         private bool jsonFlag;
         private string target;
-        private static string json_request = "http://bts.ucsc.edu:8081/location/get";
-        private static string xml_request = "http://skynet.cse.ucsc.edu/bts/coord2.xml";
+        private WebClient client;
+        readonly string json_request = "http://bts.ucsc.edu:8081/location/get";
+        readonly string xml_request = "http://skynet.cse.ucsc.edu/bts/coord2.xml";
 
         // GetBusTrackerDataAsync defaults to json_request
         // if no parameters given
-        public async Task<List<Bus>> GetBusTrackerDataAsync()
+        public async Task<string> GetBusTrackerDataAsync()
         {
             return await GetBusTrackerDataAsync(0);
         }
 
-        public async Task<List<Bus>> GetBusTrackerDataAsync(int arg)
+        public async Task<string> GetBusTrackerDataAsync(int arg)
         {
             switch (arg)
             {
@@ -40,15 +42,30 @@ namespace busit
                     break;
             }
 
-            HttpClient client = new HttpClient();
-            string response = await client.ExecuteAsync<string>(target);
-
-            
-            return parseJson(response);
+            TaskCompletionSource<string> response = new TaskCompletionSource<string>();
+            WebClient client = new WebClient();
+            client.DownloadStringCompleted += (sender, e) =>
+            {
+                if (e.Error != null)
+                {
+                    response.TrySetException(e.Error);
+                }
+                else if (e.Cancelled)
+                {
+                    response.TrySetCanceled();
+                }
+                else
+                {
+                    response.TrySetResult(e.Result);
+                }
+            };
+            client.DownloadStringAsync(new Uri(target));
+            return await response.Task;
         }
 
-        private List<Bus> parseJson(string jsonString)
+        public List<Bus> parseJson(string jAString)
         {
+            JArray a = JArray.Parse(jAString);
             List<Bus> buses = JsonConvert.DeserializeObject<List<Bus>>(jsonString);
             return buses;
         }

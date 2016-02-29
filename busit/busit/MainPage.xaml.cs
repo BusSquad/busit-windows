@@ -13,6 +13,7 @@ using Microsoft.Phone.Maps.Controls;
 using Windows.Devices.Geolocation;  // Provides the Geocoordinate class
 using busit.Resources;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace busit
 {
@@ -45,11 +46,13 @@ namespace busit
         {
             // poll server for bus locations
             BusTrackers busTrackerInfo = new BusTrackers();
-            List<Bus> buses = await busTrackerInfo.GetBusTrackerDataAsync();
-            
-            // for debugging purposes
-            Console.Write(buses);
+            string response = await busTrackerInfo.GetBusTrackerDataAsync();
 
+            // for debugging purposes
+            Debug.WriteLine(response);
+
+            //List<Bus> buses = busTrackerInfo.parseJson(response);
+            //Debug.WriteLine("Buses: " + buses.ToString());
             // TODO: Parse Json Array and place markers on map
             // refer to documentation for Json.NET
             // @ http://www.newtonsoft.com/json/help/html/Introduction.htm
