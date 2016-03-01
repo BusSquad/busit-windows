@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
+    xmlns:Location="clr-namespace:System.Device.Location;assembly=System.Device"
     x:Class="busit.MainPage"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -14,8 +15,8 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" 
+		Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,15 +25,40 @@
 
         <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="Bus App" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" 
+			Grid.Row="0" 
+			Margin="0,0,0,10" 
+            Background="#FF003D8E">
+            <TextBlock 
+                Text="BusIt" 
+				Style="{StaticResource PhoneTextNormalStyle}" 
+				Margin="12,10,0,0" 
+				FontSize="30" Foreground="White"/>
+            <TextBlock 
+                Text="UCSC Shuttle Map" 
+				Margin="12,-10,0,12" 
+				Style="{StaticResource PhoneTextTitle1Style}" 
+				FontSize="40" Foreground="#FFFFB20E"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <maps:Map Name="CampusMap"/>
+        <Grid x:Name="ContentPanel" 
+			Margin="0,105,0,0" Grid.RowSpan="2">
+            <maps:Map x:Name="CampusMap">
+                <maps:Map.Center>
+                    <Location:GeoCoordinate 
+                        Altitude="NaN" 
+                        Course="NaN" 
+                        HorizontalAccuracy="NaN" 
+                        Longitude="-122.060731" 
+                        Latitude="36.991406" 
+                        Speed="NaN" 
+                        VerticalAccuracy="NaN"/>
+                </maps:Map.Center>
+            </maps:Map>
         </Grid>
+
+        <!-- End LayoutRoot -->
     </Grid>
 
 </phone:PhoneApplicationPage>

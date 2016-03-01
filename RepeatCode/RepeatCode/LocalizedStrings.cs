@@ -1,6 +1,6 @@
-using busit.Resources;
+﻿using RepeatCode.Resources;
 
-namespace busit
+namespace RepeatCode
 {
     /// <summary>
     /// Provides access to string resources.
@@ -8,6 +8,7 @@ namespace busit
     public class LocalizedStrings
     {
         private static AppResources _localizedResources = new AppResources();
+
         public AppResources LocalizedResources { get { return _localizedResources; } }
     }
 }
