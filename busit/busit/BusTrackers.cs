@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -40,17 +39,31 @@ namespace busit
                     break;
             }
 
-            HttpClient client = new HttpClient();
-            string response = await client.ExecuteAsync<string>(target);
+            TaskCompletionSource<string> response = new TaskCompletionSource<string>();
+            WebClient client = new WebClient();
+            client.DownloadStringCompleted += (sender, e) =>
+            {
+                if (e.Error != null)
+                {
+                    response.TrySetException(e.Error);
+                }
+                else if (e.Cancelled)
+                {
+                    response.TrySetCanceled();
+                }
+                else
+                {
+                    response.TrySetResult(e.Result);
+                }
+            };
 
-            System.Console.WriteLine(response);
-            return parseJson(response);
+            client.DownloadStringAsync(new Uri(target));
+            return ParseJson(await response.Task);
         }
 
-        private List<Bus> parseJson(string jsonString)
+        public List<Bus> ParseJson(string jAString)
         {
-            
-            List<Bus> buses = JsonConvert.DeserializeObject<List<Bus>>(jsonString);
+            List<Bus> buses = JsonConvert.DeserializeObject<List<Bus>>(jAString);
             return buses;
         }
     }
