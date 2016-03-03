@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -16,18 +14,17 @@ namespace busit
     {
         private bool jsonFlag;
         private string target;
-        private WebClient client;
-        readonly string json_request = "http://bts.ucsc.edu:8081/location/get";
-        readonly string xml_request = "http://skynet.cse.ucsc.edu/bts/coord2.xml";
+        private static string json_request = "http://bts.ucsc.edu:8081/location/get";
+        private static string xml_request = "http://skynet.cse.ucsc.edu/bts/coord2.xml";
 
         // GetBusTrackerDataAsync defaults to json_request
         // if no parameters given
-        public async Task<string> GetBusTrackerDataAsync()
+        public async Task<List<Bus>> GetBusTrackerDataAsync()
         {
             return await GetBusTrackerDataAsync(0);
         }
 
-        public async Task<string> GetBusTrackerDataAsync(int arg)
+        public async Task<List<Bus>> GetBusTrackerDataAsync(int arg)
         {
             switch (arg)
             {
@@ -59,14 +56,14 @@ namespace busit
                     response.TrySetResult(e.Result);
                 }
             };
+
             client.DownloadStringAsync(new Uri(target));
-            return await response.Task;
+            return ParseJson(await response.Task);
         }
 
-        public List<Bus> parseJson(string jAString)
+        public List<Bus> ParseJson(string jAString)
         {
-            JArray a = JArray.Parse(jAString);
-            List<Bus> buses = JsonConvert.DeserializeObject<List<Bus>>(jsonString);
+            List<Bus> buses = JsonConvert.DeserializeObject<List<Bus>>(jAString);
             return buses;
         }
     }

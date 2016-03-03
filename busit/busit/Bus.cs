@@ -1,58 +1,42 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Windows.Media;
 
 namespace busit
 {
+
     class Bus
     {
         // local variables + GETTER-SETTERs
-        public double lat { get; set; }
-        public double lon { get; set; }
-        public int busID { get; set; }
-        public Color busColor { get; private set; }
-        public String direction { get; set; }
-        public String type
-        {
-            get { return type; }
+        [JsonProperty("id")]
+        public int BusID { get; set; }
 
-            set
-            {
-                updateColor(value);
-                type = value.ToUpperInvariant();
-            }
-        }
+        [JsonProperty("lon")]
+        public double Lon { get; set; }
 
-        //CONSTRUCTORs
-        //Constructor class without direction
-        Bus(double lat, double lon, int busID, String type)
-        {
-            this.lat = lat;
-            this.lon = lon;
-            this.busID = busID;
-            setRouteAndDirection(type, "UNKNOWN");
-        }
+        [JsonProperty("lat")]
+        public double Lat { get; set; }
 
-        //Constructor class for all fields incl. direction
-        Bus(double lat, double lon, int busID, String type, String direction)
-        {
-            this.lat = lat;
-            this.lon = lon;
-            this.busID = busID;
-            setRouteAndDirection(type, direction);
-        }
+        [JsonProperty("type")]
+        public String Type { get; set; }
+
+        public Color BusColor { get { return getColor(); } }
+        public String Direction { get; set; }
+
 
         // SETTERs
         // manual set route and direction 
         public void setRouteAndDirection(String type, String direction)
         {
-            this.direction = direction;
-            this.type = type;
+            Direction = direction;
+            Type = type;
         }
 
         // Sets color associated with bus based on route
-        private void updateColor(String type)
+        private Color getColor()
         {
-            switch (type)
+            Color busColor;
+            switch (Type)
             {
                 case "UPPER CAMPUS":
                     busColor = Colors.Yellow;
@@ -60,7 +44,7 @@ namespace busit
                 // need to update based on direction
                 // for inner or outer loop
                 case "LOOP":
-                    if (this.direction == "INNER")
+                    if (Direction == "INNER")
                         busColor = Colors.Orange;
                     else //(this.direction == "OUTER")
                         busColor = Colors.Blue;
@@ -72,11 +56,12 @@ namespace busit
                     busColor = Colors.Red;
                     break;
             }
+            return busColor;
         }
 
         public override string ToString()
         {
-            return "[Bus ID: " + busID.ToString() + ", Type: " + type + "] ";
+            return "[Bus ID: " + BusID.ToString() + ", Type: " + Type + "] ";
         }
 
     }

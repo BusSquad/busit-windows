@@ -1,29 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Device.Location;      // Provides the GeoCoordinate class.
-using System.Linq;
 using System;
-using System.Net;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps.Controls;
 using Windows.Devices.Geolocation;  // Provides the Geocoordinate class
-using busit.Resources;
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Threading;
+
+// TODO: Put ShowBusLocations in a runnable
+// and place markers on map
 
 namespace busit
 {
     public partial class MainPage : PhoneApplicationPage
     {
+
+        private DispatcherTimer dispatcherTimer;
+        private List<Bus> buses;
+        List<MapLayer> markerLayer = new List<MapLayer>();
         // Constructor
         public MainPage()
         {
             InitializeComponent();
             Loaded += MainPage_Loaded;
+            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
@@ -34,7 +42,8 @@ namespace busit
         {
             UpdateMap();
             ShowUserLocation();
-            ShowBusLocations();
+            dispatcherTimer.Start();
+            // ShowBusLocations();
         }
 
         private void UpdateMap()
@@ -42,23 +51,70 @@ namespace busit
             CampusMap.SetView(new GeoCoordinate(36.991406, -122.060731), 14);
         }
 
+
+        // repeats functions in this function 
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            //do whatever you want to do here
+            ShowBusLocations();
+            drawBusMarkers();
+        }
+        
+
+        // drawMarkersInMap
+        private void drawBusMarkers()
+        {
+            if (buses != null)
+            {
+                CampusMap.Layers.Clear();
+                GeoCoordinate busCoord;
+                for (int i = 0; i < buses.Count; i++)
+                {
+                    busCoord = new GeoCoordinate(System.Convert.ToDouble(buses[i].Lat), System.Convert.ToDouble(buses[i].Lon)); // Convert decimal values to double for geoc. use
+
+                    Ellipse userCircle = new Ellipse();
+                    userCircle.Fill = new SolidColorBrush(buses[i].BusColor);
+                    userCircle.Height = 24;
+                    userCircle.Width = 24;
+
+                    // Create a MapOverlay to contain the bus marker
+                    MapOverlay busOverlay = new MapOverlay();
+                    busOverlay.Content = userCircle;
+                    busOverlay.PositionOrigin = new Point(0.5, 0.5);
+                    busOverlay.GeoCoordinate = (busCoord);
+
+                    // Create a MapLayer to contain the MapOPverlay
+                    MapLayer busLayer = new MapLayer();
+                    busLayer.Add(busOverlay);
+                    CampusMap.Layers.Add(busLayer); // Add the MapLayer to the map
+                }
+            }
+           
+        }
+
+        // gets a list of buses from the online json file
         private async void ShowBusLocations()
         {
             // poll server for bus locations
+            
             BusTrackers busTrackerInfo = new BusTrackers();
-            string response = await busTrackerInfo.GetBusTrackerDataAsync();
+            buses = await busTrackerInfo.GetBusTrackerDataAsync();
 
             // for debugging purposes
-            Debug.WriteLine(response);
+            if(buses != null)
+            {
+                foreach(Bus bus in buses)
+                {
+                    Debug.WriteLine(bus);
+                }
+            }
 
-            //List<Bus> buses = busTrackerInfo.parseJson(response);
-            //Debug.WriteLine("Buses: " + buses.ToString());
-            // TODO: Parse Json Array and place markers on map
-            // refer to documentation for Json.NET
-            // @ http://www.newtonsoft.com/json/help/html/Introduction.htm
-            // Preferred that BusTrackers return a list of Buses.
         }
 
+
+
+
+        // shows users location
         private async void ShowUserLocation()
         {
             // Get my current location requires stupid conversions
