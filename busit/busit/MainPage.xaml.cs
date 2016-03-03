@@ -50,7 +50,7 @@ namespace busit
         }
 
 
-        // repeates functions in this function 
+        // repeats functions in this function 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             //do whatever you want to do here
@@ -62,13 +62,20 @@ namespace busit
         // drawMarkersInMap
         private void drawBusMarkers()
         {
-            for (int i = 1; i <= buses.Count; i++)
+            if (buses != null)
             {
-                Ellipse userCircle = new Ellipse();
-              //  userCircle.Fill = new SolidColorBrush(buses.);
-                userCircle.Height = 16;
-                userCircle.Height = 16;
-                userCircle.Width = 16;
+                for (int i = 0; i < buses.Count; i++)
+                {
+                    Debug.WriteLine(buses[i].Type);
+                    Debug.WriteLine(buses[i].Lon);
+                    Debug.WriteLine(buses[i].Lat);
+                    Ellipse userCircle = new Ellipse();
+                    //userCircle.Fill = new SolidColorBrush(buses.);
+                    userCircle.Height = 16;
+                    userCircle.Height = 16;
+                    userCircle.Width = 16;
+
+                }
             }
            
         }

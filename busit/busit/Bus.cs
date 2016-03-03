@@ -8,14 +8,14 @@ namespace busit
     class Bus
     {
         // local variables + GETTER-SETTERs
-        [JsonProperty("lat")]
-        public double Lat { get; set; }
-
-        [JsonProperty("lon")]
-        public double Lon { get; set; }
-
         [JsonProperty("id")]
         public int BusID { get; set; }
+
+        [JsonProperty("lat")]
+        public decimal Lon { get; set; }
+
+        [JsonProperty("lon")]
+        public decimal Lat { get; set; }
 
         [JsonProperty("type")]
         public String Type { get; set; }
