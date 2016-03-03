@@ -2,6 +2,7 @@
 using System.Device.Location;      // Provides the GeoCoordinate class.
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
@@ -21,6 +22,7 @@ namespace busit
 
         private DispatcherTimer dispatcherTimer;
         private List<Bus> buses;
+        List<MapLayer> markerLayer = new List<MapLayer>();
         // Constructor
         public MainPage()
         {
@@ -64,24 +66,31 @@ namespace busit
         {
             if (buses != null)
             {
+                CampusMap.Layers.Clear();
+                GeoCoordinate busCoord;
                 for (int i = 0; i < buses.Count; i++)
                 {
-                    Debug.WriteLine(buses[i].Type);
-                    Debug.WriteLine(buses[i].Lon);
-                    Debug.WriteLine(buses[i].Lat);
-                    Ellipse userCircle = new Ellipse();
-                    //userCircle.Fill = new SolidColorBrush(buses.);
-                    userCircle.Height = 16;
-                    userCircle.Height = 16;
-                    userCircle.Width = 16;
+                    busCoord = new GeoCoordinate(System.Convert.ToDouble(buses[i].Lat), System.Convert.ToDouble(buses[i].Lon)); // Convert decimal values to double for geoc. use
 
+                    Ellipse userCircle = new Ellipse();
+                    userCircle.Fill = new SolidColorBrush(buses[i].BusColor);
+                    userCircle.Height = 24;
+                    userCircle.Width = 24;
+
+                    // Create a MapOverlay to contain the bus marker
+                    MapOverlay busOverlay = new MapOverlay();
+                    busOverlay.Content = userCircle;
+                    busOverlay.PositionOrigin = new Point(0.5, 0.5);
+                    busOverlay.GeoCoordinate = (busCoord);
+
+                    // Create a MapLayer to contain the MapOPverlay
+                    MapLayer busLayer = new MapLayer();
+                    busLayer.Add(busOverlay);
+                    CampusMap.Layers.Add(busLayer); // Add the MapLayer to the map
                 }
             }
            
         }
-
-        
-
 
         // gets a list of buses from the online json file
         private async void ShowBusLocations()
