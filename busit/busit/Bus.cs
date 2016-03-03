@@ -20,7 +20,7 @@ namespace busit
         [JsonProperty("type")]
         public String Type { get; set; }
 
-        private Color BusColor { get { return getColor(); } }
+        public Color BusColor { get { return getColor(); } }
         public String Direction { get; set; }
 
 
