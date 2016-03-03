@@ -11,10 +11,10 @@ namespace busit
         [JsonProperty("id")]
         public int BusID { get; set; }
 
-        [JsonProperty("lat")]
+        [JsonProperty("lon")]
         public decimal Lon { get; set; }
 
-        [JsonProperty("lon")]
+        [JsonProperty("lat")]
         public decimal Lat { get; set; }
 
         [JsonProperty("type")]
