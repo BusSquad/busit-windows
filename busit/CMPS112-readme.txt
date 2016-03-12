@@ -1,0 +1,3 @@
+Hello!
+
+To compile and run our project, open it in Visual Studio and run it in its included mobile emulator, which is accessible from the main toolbar. Though we are confident that this can compile and run, we've only tested this under Visual Studio Enterprise 2015, version 14.0.24720.00, Update 1. Windows Phone SDK 8.0 and Visual Studio Tools for Universal Windows Apps are among the required packages.
